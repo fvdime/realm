@@ -6,6 +6,7 @@ import next from '@/lib/error-handler';
 import { z } from 'zod';
 import { v4 as uuidv4 } from 'uuid';
 import crypto from 'crypto';
+import { expTime } from '@/lib/commons';
 
 const createSchema = z.object({
     username: z.string().regex(new RegExp(/^[a-zA-Z0-9-]{3,30}$/)),
@@ -83,8 +84,6 @@ export async function POST(req: NextRequest) {
         });
 
         if (savedUser) {
-            const expTime = 30 * 24 * 60 * 60 * 1000;
-
             const token = await prisma.token.create({
                 data: {
                     token: uuidv4() + crypto.randomBytes(32).toString('hex'),
