@@ -17,6 +17,7 @@ model User {
   fullname  String?
   photoUrl  String   @default("")
   password  String
+  birthday  DateTime
   isStatus  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
