@@ -1,3 +1,5 @@
+'use server';
+
 import prisma from './prisma';
 import { NextRequest } from 'next/server';
 
@@ -5,6 +7,8 @@ const authenticate = async (req: NextRequest) => {
     const accessToken =
         req?.cookies?.get('accesstoken')?.value ||
         req?.headers?.get('authorization')?.split(' ')[1];
+
+    console.log('Access Token', req?.cookies?.get('accesstoken')?.value);
 
     if (!accessToken) return false;
 

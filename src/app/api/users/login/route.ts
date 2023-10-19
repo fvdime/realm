@@ -69,8 +69,15 @@ export async function POST(req: NextRequest) {
         if (match) {
             user.password = '';
 
-            const token = await prisma.token.create({
-                data: {
+            const token = await prisma.token.upsert({
+                where: {
+                    userId: user.id,
+                },
+                update: {
+                    token: uuidv4() + crypto.randomBytes(32).toString('hex'),
+                    createdAt: new Date(),
+                },
+                create: {
                     token: uuidv4() + crypto.randomBytes(32).toString('hex'),
                     createdAt: new Date(),
                     userId: user.id,
