@@ -1,5 +1,6 @@
 "use client"
 
+import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
@@ -24,31 +25,23 @@ const HomeNavbar = () => {
           <div className='flex flex-row justify-between items-center mb-2'>
             <div>
               <span className='uppercase font-semibold'>realm</span>
-              <span className='text-fuchsia-400 font-extrabold'>.</span>
+              <span className='text-slate-400 font-extrabold'>.</span>
             </div>
             <div className='flex flex-row gap-1 items-center justify-end'>
-              <div className='hidden md:flex flex-row items-center gap-2'>
-                <Link href="/" className='text-sm font-medium'>Realm Business</Link>
-                <Link href="/" className='text-sm font-medium'>Explore</Link>
-                <Link href="/" className='text-sm font-medium'>Sign in</Link>
-                {/* i am gonna think about it */}
-                <Link href="/" className='text-sm font-medium'>Become a Part</Link>
-              </div>
-              <div>
-              <Link href="/auth" className='border rounded-lg px-4 py-1 text-sm font-medium'>Join</Link>
-              </div>
+              {/* idkkkkkkkkkkkkkk */}
+              <Link href="/profile">
+                <Image src='/flower2.jpg' alt='' width={24} height={24} className='object-cover rounded-full' />
+              </Link>
             </div>
           </div>
         <hr className='min-w-full' />
         <div className='flex flex-row items-center justify-between w-full font-medium text-sm'>
           {active && 
             <>
-              <span>aaaaa</span>
-              <span>aaaaa</span>
-              <span>aaaaa</span>
-              <span>aaaaa</span>
-              <span>aaaaa</span>
-              <span>aaaaa</span>
+              <Link href="/" className='text-sm font-medium'>Realm Business</Link>
+                <Link href="/" className='text-sm font-medium'>Become a Part</Link>
+                <Link href="/" className='text-sm font-medium'>Contact</Link>
+                <Link href="/" className='text-sm font-medium'>Source</Link>
             </>
           }
         </div>
