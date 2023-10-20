@@ -1,10 +1,15 @@
 import { NextResponse, NextRequest } from 'next/server';
 // import authenticate from './lib/authenticate';
 import httpStatus from 'http-status';
-import axios from 'axios';
 
 export async function middleware(req: NextRequest) {
     if (req.nextUrl.pathname.startsWith('/api')) {
+        if (
+            req.nextUrl.pathname.startsWith('/api/images/') &&
+            req.method == 'GET'
+        )
+            return NextResponse.next();
+
         const accessToken =
             req?.cookies?.get('accesstoken')?.value ||
             req?.headers?.get('authorization')?.split(' ')[1];
@@ -44,5 +49,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/api/users/getbytoken'],
+    matcher: ['/api/users/getbytoken', '/api/images/:path*'],
 };
