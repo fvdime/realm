@@ -1,4 +1,4 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
 const sendMail = async ({
     email,
@@ -8,11 +8,12 @@ const sendMail = async ({
 }: {
     email: string;
     subject: string;
-    text?: string;
-    html?: string;
+    text?: string | null;
+    html?: string | null;
 }) => {
     try {
         const transporter = nodemailer.createTransport({
+            //@ts-ignore
             host: process.env.MAIL_HOST,
             service: process.env.MAIL_SERVICE,
             port: process.env.MAIL_PORT,
@@ -27,8 +28,8 @@ const sendMail = async ({
             from: process.env.USER,
             to: email,
             subject: subject,
-            text: text,
-            html: html,
+            text: text || '',
+            html: html || '',
         });
 
         return true;
