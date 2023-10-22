@@ -11,19 +11,20 @@ datasource db {
 }
 
 model User {
-  id         String      @id @default(auto()) @map("_id") @db.ObjectId
-  email      String      @unique
-  username   String      @unique
-  fullname   String?
-  photoUrl   String      @default("")
-  password   String
-  birthday   DateTime
-  isStatus   Boolean     @default(true)
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-  Token      Token?
-  Images     Image[]
-  ResetToken ResetToken?
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  email       String       @unique
+  username    String       @unique
+  fullname    String?
+  photoUrl    String       @default("")
+  password    String
+  birthday    DateTime
+  isStatus    Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  Token       Token?
+  Images      Image[]
+  ResetToken  ResetToken?
+  SavedImages SavedImage[]
 }
 
 model Token {
@@ -43,12 +44,23 @@ model ResetToken {
 }
 
 model Image {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
   imageUrl     String
   description  String?
   createdAt    DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       String   @unique @db.ObjectId
-  isShowStatus Boolean  @default(true)
-  isStatus     Boolean  @default(true)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String       @unique @db.ObjectId
+  isShowStatus Boolean      @default(true)
+  isStatus     Boolean      @default(true)
+  SavedImages  SavedImage[]
+}
+
+model SavedImage {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  image     Image    @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  imageId   String   @unique @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @unique @db.ObjectId
+  isStatus  Boolean  @default(true)
+  createdAt DateTime @default(now())
 }

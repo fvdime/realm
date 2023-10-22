@@ -8,9 +8,10 @@ export const GET = async (
     { params }: { params: { username: string } }
 ) => {
     try {
-        console.log(params.username);
+        const { searchParams } = new URL(req.url);
 
-        console.log(process.env.DATABASE_URL);
+        const userId: string =
+            searchParams.get('userId') || '635981f6e40f61599e839ddb';
 
         const user = await prisma.user.findFirst({
             where: {
@@ -27,6 +28,21 @@ export const GET = async (
             where: {
                 userId: user.id,
                 isShowStatus: true,
+            },
+            include: {
+                SavedImages: {
+                    // select: {
+                    //     id: true,
+                    //     imageId: true,
+                    //     userId: true,
+                    //     createdAt: true,
+                    //     isStatus: true,
+                    // },
+                    where: {
+                        isStatus: true,
+                        userId: userId,
+                    },
+                },
             },
         });
 

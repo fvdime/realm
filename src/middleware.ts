@@ -49,5 +49,9 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/api/users/getbytoken', '/api/images/:path*'],
+    matcher: [
+        '/api/users/getbytoken',
+        '/api/images/:path*',
+        '/api/savedimages/:path*',
+    ],
 };
