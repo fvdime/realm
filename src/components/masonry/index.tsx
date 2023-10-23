@@ -96,9 +96,9 @@ const Masonry = () => {
       <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
       {/* max-w-screen-lg mx-auto p-4 lg:px-0  */}
       {imgSrc.map((item) => (
-        <div className='w-full break-inside-auto mb-2' key={item.id}>
-          <Link href='/faya/1' className='cursor-pointer bg-gray-500 bg-blend-multiply'>
-            <img src={item.src} alt="" className='rounded-lg transition-all duration-500 ease-in-out hover:brightness-50' />
+        <div className='grid gap-4 w-full break-inside-auto mb-2' key={item.id}>
+          <Link href='/faya/1' className='cursor-pointer bg-blend-multiply'>
+            <img src={item.src} alt="" className='rounded-lg transition-all duration-500 ease-in-out hover:brightness-50 object-contain w-full h-full' />
           </Link>
         </div>
       ))}
