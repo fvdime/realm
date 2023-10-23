@@ -16,6 +16,28 @@ export const GET = async (
         const user = await prisma.user.findFirst({
             where: {
                 username: params.username,
+                isStatus: true,
+            },
+            select: {
+                id: true,
+                username: true,
+                email: true,
+                birthday: true,
+                photoUrl: true,
+                fullname: true,
+                Images: {
+                    where: {
+                        isShowStatus: true,
+                    },
+                    // include: {
+                    //     SavedImages: {
+                    //         where: {
+                    //             isStatus: true,
+                    //             userId: userId,
+                    //         },
+                    //     },
+                    // },
+                },
             },
         });
 
@@ -24,22 +46,7 @@ export const GET = async (
                 statusCode: httpStatus.BAD_REQUEST,
             });
 
-        const images = await prisma.image.findMany({
-            where: {
-                userId: user.id,
-                isShowStatus: true,
-            },
-            // include: {
-            //     SavedImages: {
-            //         where: {
-            //             isStatus: true,
-            //             userId: userId,
-            //         },
-            //     },
-            // },
-        });
-
-        return NextResponse.json({ success: true, images }, { status: 200 });
+        return NextResponse.json({ success: true, user }, { status: 200 });
     } catch (error) {
         return next({
             error,
