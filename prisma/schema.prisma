@@ -46,7 +46,7 @@ model ResetToken {
 model Image {
   id           String       @id @default(auto()) @map("_id") @db.ObjectId
   imageUrl     String
-  description  String?
+  description  String       @default("")
   createdAt    DateTime
   user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String       @unique @db.ObjectId

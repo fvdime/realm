@@ -8,11 +8,6 @@ export const GET = async (
     { params }: { params: { username: string } }
 ) => {
     try {
-        // const { searchParams } = new URL(req.url);
-
-        // const userId: string =
-        //     searchParams.get('userId') || '635981f6e40f61599e839ddb';
-
         const user = await prisma.user.findFirst({
             where: {
                 username: params.username,
