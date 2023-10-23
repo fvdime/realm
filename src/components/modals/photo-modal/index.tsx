@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import React, { ReactNode, useCallback, useRef } from 'react'
 
-const Modal = ({ children }: { children: ReactNode}) => {
+const PhotoModal = ({ children }: { children: ReactNode}) => {
 
   const overlay = useRef<HTMLDivElement>(null)
   const wrapper = useRef<HTMLDivElement>(null)
@@ -35,4 +35,4 @@ const Modal = ({ children }: { children: ReactNode}) => {
   )
 }
 
-export default Modal
+export default PhotoModal
