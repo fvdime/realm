@@ -8,10 +8,10 @@ export const GET = async (
     { params }: { params: { username: string } }
 ) => {
     try {
-        const { searchParams } = new URL(req.url);
+        // const { searchParams } = new URL(req.url);
 
-        const userId: string =
-            searchParams.get('userId') || '635981f6e40f61599e839ddb';
+        // const userId: string =
+        //     searchParams.get('userId') || '635981f6e40f61599e839ddb';
 
         const user = await prisma.user.findFirst({
             where: {
@@ -29,21 +29,14 @@ export const GET = async (
                 userId: user.id,
                 isShowStatus: true,
             },
-            include: {
-                SavedImages: {
-                    // select: {
-                    //     id: true,
-                    //     imageId: true,
-                    //     userId: true,
-                    //     createdAt: true,
-                    //     isStatus: true,
-                    // },
-                    where: {
-                        isStatus: true,
-                        userId: userId,
-                    },
-                },
-            },
+            // include: {
+            //     SavedImages: {
+            //         where: {
+            //             isStatus: true,
+            //             userId: userId,
+            //         },
+            //     },
+            // },
         });
 
         return NextResponse.json({ success: true, images }, { status: 200 });
