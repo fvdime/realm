@@ -19,16 +19,25 @@ export const authSchema = yup.object().shape({
         .min(6)
         .matches(passwordRules, { message: 'Please create stronger password' })
         .required('Required'),
-    confirmPassword: yup
-        .string()
-        .oneOf([yup.ref('password'), ' '], 'Passwords must match')
-        .required('Required'),
-    birthDate: yup
+    // confirmPassword: yup
+    //     .string()
+    //     .oneOf([yup.ref('password'), ' '], 'Passwords must match')
+    //     .required('Required'),
+    birthday: yup
         .date()
         .max(
             new Date(Date.now() - 567648000000),
             'You must be at least 18 years'
         )
+        .required('Required'),
+});
+
+export const loginSchema = yup.object().shape({
+    username: yup.string().min(2, 'Too short').required('Required'),
+    password: yup
+        .string()
+        .min(6)
+        .matches(passwordRules, { message: 'Please create stronger password' })
         .required('Required'),
 });
 

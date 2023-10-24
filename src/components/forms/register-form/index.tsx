@@ -3,50 +3,53 @@
 import { useState } from "react"
 import axios from 'axios'
 import { useRouter } from "next/navigation"
-import toast from "react-hot-toast"
 import { useFormik } from 'formik'
 import { authSchema } from "@/schemas/authSchema"
 import Link from "next/link"
+import toast, { Toaster } from "react-hot-toast"
+import { ReloadIcon } from "@radix-ui/react-icons"
+
+interface InitialValues {
+  username: string;
+  email: string;
+  birthday: string;
+  password: string;
+}
+
 
 const RegisterForm = () => {
 
-  const [loading, setLoading] = useState(false)
-  
+  const initialValues: InitialValues = {
+    username: "",
+    email: "",
+    birthday: "",
+    password: "",
+    // confirmPassword: "",
+  }
+
   const router = useRouter()
 
-  // {values: {[field: string]: any}, actions: any}
-
-
-  const onSubmit = async (values: any, actions: {resetForm: () => void} ) => {
-    console.log(actions)
-    try {
-      await axios.post("/api/users/register", values).then((res) => {
-        if (res.data?.success === true) {
-          router.push('/')
-        }
-
-        actions.resetForm()
-
-      })
-      console.log("Registration successful:");
-    } catch (error) {
-      console.error("Registration failed:", error);
-    }
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    actions.resetForm();
-    router.push("/login");
+  const onSubmit = (values: InitialValues, actions: { resetForm: () => void; setSubmitting: (arg0: boolean) => void }) => {
+    console.log(values)
+    axios.post("/api/users/register", values).then((res) => {
+      console.log(values)
+      if (res.data?.success == true) {
+        toast.success('Successfully!')
+        setTimeout(() => router.push("/"), 250)
+        // router.push("/");
+      } else {
+        actions.resetForm();
+        toast.error('Permission denied!')
+        actions.setSubmitting(false);
+      }
+    }).catch(err => {
+      actions.resetForm();
+      toast.error('Permission denied!')
+      actions.setSubmitting(false);
+    })
   };
-  // const onSubmit = async ({values, actions}: any) => {
-  //   try {
-  //     const response = await axios.post("/api/users/register", values);
-  //     console.log("Registration successful:", response.data);
-  //   } catch (error) {
-  //     console.error("Registration failed:", error);
-  //   }
-  // await new Promise((resolve) => setTimeout(resolve, 1000));
-  //   actions.resetForm();
-  //   router.push("/login");
-  // };
+
+
 
   const { values,
     handleBlur,
@@ -54,19 +57,13 @@ const RegisterForm = () => {
     handleSubmit,
     errors,
     touched,
-    isSubmitting,} = useFormik({
-    initialValues: {
-      username: "",
-      email: "",
-      birthDate: "",
-      password: "",
-      confirmPassword: "",
-    },
-    validationSchema: authSchema, 
-    onSubmit,
-  })
-  
-  console.log(values.birthDate)
+    isSubmitting, } = useFormik({
+      initialValues,
+      validationSchema: authSchema,
+      onSubmit,
+    })
+
+
 
   return (
     <div className="h-screen flex items-center justify-center">
@@ -89,7 +86,7 @@ const RegisterForm = () => {
               value={values.username}
               onChange={handleChange}
               onBlur={handleBlur}
-              required />
+            />
             <label htmlFor="username" className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Username</label>
             {errors.username && touched.username && (
               <p className="text-xs font-medium text-red-600 pt-1">{errors.username}</p>
@@ -98,18 +95,18 @@ const RegisterForm = () => {
           <div className="relative z-0 w-full mb-6 group">
             <input
               type="date"
-              id='birthDate'
-              name="birthDate"
+              id='birthday'
+              name="birthday"
               className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-[1px]  appearance-none focus:outline-none focus:ring-0 focus:border-slate-400 peer
-                ${errors.birthDate && touched.birthDate ?
+                ${errors.birthday && touched.birthday ?
                   "border-red-700" : "border-gray-300"}`} placeholder=" "
-              value={values.birthDate}
+              value={values.birthday}
               onChange={handleChange}
               onBlur={handleBlur}
               required />
-            <label htmlFor="birthDate" className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Date of Birth</label>
-            {errors.birthDate && touched.birthDate && (
-              <p className="text-xs font-medium text-red-600">{errors.birthDate}</p>
+            <label htmlFor="birthday" className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Date of Birth</label>
+            {errors.birthday && touched.birthday && (
+              <p className="text-xs font-medium text-red-600">{errors.birthday}</p>
             )}
           </div>
         </div>
@@ -123,8 +120,7 @@ const RegisterForm = () => {
                 "border-red-700" : "border-gray-300"}`} placeholder=" "
             value={values.email}
             onChange={handleChange}
-            onBlur={handleBlur}
-            required />
+            onBlur={handleBlur} />
           <label htmlFor="email" className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email</label>
           {errors.email && touched.email && (
             <p className="text-xs font-medium text-red-600">{errors.email}</p>
@@ -140,14 +136,13 @@ const RegisterForm = () => {
                 "border-red-700" : "border-gray-300"}`} placeholder=" "
             value={values.password}
             onChange={handleChange}
-            onBlur={handleBlur}
-            required />
+            onBlur={handleBlur} />
           <label htmlFor="password" className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
           {errors.password && touched.password && (
             <p className="text-xs font-medium text-red-600">{errors.password}</p>
           )}
         </div>
-        <div className="relative z-0 w-full mb-6 group">
+        {/* <div className="relative z-0 w-full mb-6 group">
           <input
             type="password"
             name="confirmPassword"
@@ -163,13 +158,14 @@ const RegisterForm = () => {
           {errors.confirmPassword && touched.confirmPassword && (
             <p className="text-xs font-medium text-red-600">{errors.confirmPassword}</p>
           )}
-        </div>
+        </div> */}
         <div className="text-center lg:text-left">
           <button
             type="submit"
-            className="text-white bg-black"
+            className="w-full  flex justify-center items-center flex-row border px-8 py-2 rounded-3xl text-white uppercase text-xs hover:text-gray-950 bg-gray-950 border-gray-950 hover:bg-white duration-500 transition-all ease-in disabled:opacity-25"
             disabled={isSubmitting}
           >
+            {isSubmitting && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
             Sign Up
           </button>
           <p className="mb-0 mt-3 pt-1 text-sm font-medium text-gray-950">
@@ -183,6 +179,8 @@ const RegisterForm = () => {
           </p>
         </div>
       </form>
+      <Toaster position="top-right"
+        reverseOrder={false} />
     </div>
   )
 }
