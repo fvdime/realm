@@ -11,15 +11,24 @@ import Link from "next/link"
 const RegisterForm = () => {
 
   const [loading, setLoading] = useState(false)
-
+  
   const router = useRouter()
 
   // {values: {[field: string]: any}, actions: any}
 
-  const onSubmit = async ({ values, actions }: any) => {
+
+  const onSubmit = async (values: any, actions: {resetForm: () => void} ) => {
+    console.log(actions)
     try {
-      const response = await axios.post("/api/users/register", values);
-      console.log("Registration successful:", response.data);
+      await axios.post("/api/users/register", values).then((res) => {
+        if (res.data?.success === true) {
+          router.push('/')
+        }
+
+        actions.resetForm()
+
+      })
+      console.log("Registration successful:");
     } catch (error) {
       console.error("Registration failed:", error);
     }
@@ -45,17 +54,19 @@ const RegisterForm = () => {
     handleSubmit,
     errors,
     touched,
-    isSubmitting, } = useFormik({
-      initialValues: {
-        username: "",
-        email: "",
-        birthDate: "",
-        password: "",
-        confirmPassword: "",
-      },
-      validationSchema: authSchema,
-      onSubmit,
-    })
+    isSubmitting,} = useFormik({
+    initialValues: {
+      username: "",
+      email: "",
+      birthDate: "",
+      password: "",
+      confirmPassword: "",
+    },
+    validationSchema: authSchema, 
+    onSubmit,
+  })
+  
+  console.log(values.birthDate)
 
   return (
     <div className="h-screen flex items-center justify-center">
