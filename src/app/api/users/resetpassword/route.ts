@@ -5,10 +5,28 @@ import next from '@/lib/error-handler';
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
 
-const validateSchema = z.object({
-    token: z.string().min(6).max(6),
-    password: z.string().min(6),
-});
+const validateSchema = z
+    .object({
+        expire: z.string().min(16).max(16),
+        password: z.string().min(6),
+        confirmPassword: z.string().min(6),
+    })
+    .superRefine(
+        (
+            {
+                confirmPassword,
+                password,
+            }: { confirmPassword: string; password: string },
+            ctx: any
+        ) => {
+            if (confirmPassword !== password) {
+                ctx.addIssue({
+                    code: 'custom',
+                    message: 'The passwords did not match',
+                });
+            }
+        }
+    );
 
 export async function POST(req: NextRequest) {
     try {
@@ -18,7 +36,7 @@ export async function POST(req: NextRequest) {
 
         const resetToken = await prisma.resetToken.findUnique({
             where: {
-                token: isValidData.token,
+                token: isValidData.expire,
             },
         });
 
