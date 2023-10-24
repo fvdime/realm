@@ -1,17 +1,7 @@
-'use client'
-
-import { useSearchParams } from 'next/navigation'
+import ResetPasswordForm from "@/components/forms/resetpassword-form"
 
 const ResetPasswordPage = () => {
-    const searchParams = useSearchParams()
-
-    const expire = searchParams.get('expire')
-
-    console.log(expire)
-
-    return <div>
-
-    </div>
+    return <div><ResetPasswordForm /></div>
 }
 
 export default ResetPasswordPage

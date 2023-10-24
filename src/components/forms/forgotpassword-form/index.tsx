@@ -25,10 +25,11 @@ const ForgotPasswordForm = () => {
             if (res.data?.success == true) {
                 toast.success('Successfully!')
                 router.push("/login");
-            };
-            actions.resetForm();
-            toast.error('Permission denied!')
-            actions.setSubmitting(false);
+            } else {
+                actions.resetForm();
+                toast.error('Permission denied!')
+                actions.setSubmitting(false);
+            }
         }).catch(err => {
             actions.resetForm();
             toast.error('Permission denied!')

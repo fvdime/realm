@@ -16,7 +16,7 @@ function createResetToken() {
     //         Math.random() * (Math.pow(10, 6) - Math.pow(10, 6 - 1) - 1)
     // ).toString();
 
-    return crypto.randomBytes(16).toString('hex');
+    return crypto.randomBytes(8).toString('hex');
 }
 
 export async function POST(req: NextRequest) {
@@ -98,9 +98,9 @@ export async function POST(req: NextRequest) {
 
         const result = await sendMail({
             email: user.email,
-            subject: 'Password Reset Token',
+            subject: 'Your Password Reset Request',
             text: null,
-            html: `<p>Token: ${
+            html: `<p>Password Reset Links: ${
                 process.env.NEXT_PUBLIC_API_BASE +
                 '/resetpassword?expire=' +
                 resetToken.token

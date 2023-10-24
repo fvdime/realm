@@ -35,3 +35,15 @@ export const authSchema = yup.object().shape({
 export const forgotSchema = yup.object().shape({
     username: yup.string().min(3, 'Too short').required('Required'),
 });
+
+export const resetPasswordSchema = yup.object().shape({
+    password: yup
+        .string()
+        .min(6)
+        .matches(passwordRules, { message: 'Please create stronger password' })
+        .required('Required'),
+    confirmPassword: yup
+        .string()
+        .oneOf([yup.ref('password'), ' '], 'Passwords must match')
+        .required('Required'),
+});
