@@ -24,6 +24,7 @@ const LoginForm = () => {
     axios.post("/api/users/login", values).then((res) => {
       console.log(res)
       if (res.data?.success == true) {
+        localStorage.setItem("user", JSON.stringify(res.data?.data))
         toast.success('Successfully!')
         router.push("/");
       } else {

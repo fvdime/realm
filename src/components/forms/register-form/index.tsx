@@ -34,6 +34,7 @@ const RegisterForm = () => {
     axios.post("/api/users/register", values).then((res) => {
       console.log(values)
       if (res.data?.success == true) {
+        localStorage.setItem("user", JSON.stringify(res.data?.data))
         toast.success('Successfully!')
         setTimeout(() => router.push("/"), 250)
         // router.push("/");
