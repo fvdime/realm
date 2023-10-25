@@ -4,3 +4,16 @@ export type ErrorParams = {
     error?: any;
     errCode?: string;
 };
+
+export type ImageType = {
+    id: string;
+    imageUrl: string;
+    userId: string;
+    user: {
+        id: string;
+        username: string;
+        email: string;
+    };
+    createdAt: string;
+    description: string;
+};

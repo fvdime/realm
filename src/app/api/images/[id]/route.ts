@@ -15,6 +15,15 @@ export const GET = async (
                 id: id,
                 isShowStatus: true,
             },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        username: true,
+                        email: true,
+                    },
+                },
+            },
         });
 
         return NextResponse.json({ success: true, image }, { status: 200 });
