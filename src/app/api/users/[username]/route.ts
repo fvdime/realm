@@ -25,6 +25,7 @@ export const GET = async (
                 birthday: true,
                 photoUrl: true,
                 fullname: true,
+                bio: true,
                 Images: {
                     where: {
                         isShowStatus: true,
