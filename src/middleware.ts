@@ -78,5 +78,6 @@ export const config = {
         '/register',
         '/forgotpassword',
         '/resetpassword',
+        '/account',
     ],
 };

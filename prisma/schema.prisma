@@ -16,6 +16,7 @@ model User {
   username    String       @unique
   fullname    String?
   photoUrl    String       @default("")
+  bio         String       @default("")
   password    String
   birthday    DateTime
   isStatus    Boolean      @default(true)

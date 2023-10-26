@@ -32,8 +32,8 @@ const HomeNavbar = ({ user, imageServiceUrl }: { user: any, imageServiceUrl: str
           <div className='flex flex-row gap-1 items-center justify-end'>
             {
               user?.username &&
-              <Link href={`/${user.username}`}>
-                <Image src={user?.photoUrl ? (imageServiceUrl + user.photoUrl) : "/user.png"} alt='' width={24} height={24} className='object-cover rounded-full' />
+              <Link href="/account">
+                <Image src={user?.photoUrl ? (imageServiceUrl + user.photoUrl) : `https://ui-avatars.com/api/?name=${user.username}`} alt='' width={24} height={24} className='object-cover rounded-full' />
               </Link>
             }
           </div>

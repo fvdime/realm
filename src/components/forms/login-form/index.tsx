@@ -26,7 +26,7 @@ const LoginForm = () => {
       if (res.data?.success == true) {
         localStorage.setItem("user", JSON.stringify(res.data?.data))
         toast.success('Successfully!')
-        router.push("/");
+        router.push("/login");
       } else {
         actions.resetForm();
         toast.error('Permission denied!')
