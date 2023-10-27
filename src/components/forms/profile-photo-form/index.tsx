@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import styles from './style.module.css';
 import axios from 'axios';
 import toast, { Toaster } from "react-hot-toast"
+import { store } from '@/stores';
+import { actions } from '@/stores/user';
 
 export default function ProfilePictureForm({ imageService, user }: { imageService: string, user: any }) {
     const [userState, SetState] = useState(user)
@@ -17,9 +19,9 @@ export default function ProfilePictureForm({ imageService, user }: { imageServic
         axios
             .post('/api/users/update/profilepic', formData)
             .then((res) => {
-                console.log(res.data);
                 if (res.data?.success) {
                     SetState(res.data?.user)
+                    store.dispatch(actions.SetUser(res.data?.user))
                     toast.success('Successfully!')
                 } else {
                     toast.error('Process Error')
