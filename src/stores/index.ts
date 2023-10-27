@@ -6,7 +6,7 @@ export function createStore(preloadedState = {}) {
     const store = configureStore({
         reducer: {
             user: userReducer,
-            // profile: profileReducer,
+            profile: profileReducer,
         },
         preloadedState,
     });

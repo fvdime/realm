@@ -3,16 +3,29 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 
-const HomeNavbar = ({ user, imageServiceUrl }: { user: any, imageServiceUrl: string }) => {
+const HomeNavbar = ({ imageServiceUrl }: { imageServiceUrl: string }) => {
 
   const [active, setActive] = useState(false)
+
+  const [user, SetUser] = useState({
+    username: "",
+    photoUrl: "",
+  })
 
   const isActive = () => {
     window.scrollY > 0 ? setActive(true) : setActive(false)
   }
   useEffect(() => {
     window.addEventListener("scroll", isActive)
+
+    axios.get("/api/users/getbytoken")
+      .then(res => {
+        if (res.data?.success) {
+          SetUser(res.data?.data)
+        }
+      }).catch(err => console.log(err))
 
     return () => {
       window.removeEventListener("scroll", isActive)
@@ -29,11 +42,11 @@ const HomeNavbar = ({ user, imageServiceUrl }: { user: any, imageServiceUrl: str
               <span className='text-slate-400 font-extrabold'>.</span>
             </Link>
           </div>
-          <div className='flex flex-row gap-1 items-center justify-end'>
+          <div className='flex flex-row items-center justify-end'>
             {
               user?.username &&
               <Link href="/account">
-                <Image src={user?.photoUrl ? (imageServiceUrl + user.photoUrl) : `https://ui-avatars.com/api/?name=${user.username}`} alt='' width={24} height={24} className='object-cover rounded-full' />
+                <Image src={user?.photoUrl ? (imageServiceUrl + user.photoUrl) : `https://ui-avatars.com/api/?name=${user.username}`} alt='' width={24} height={24} className='object-cover rounded-full h-8 w-8 object-contain' />
               </Link>
             }
           </div>
