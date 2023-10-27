@@ -3,23 +3,31 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import styles from './style.module.css';
 import axios from 'axios';
+import toast, { Toaster } from "react-hot-toast"
 
 export default function ProfilePictureForm({ imageService, user }: { imageService: string, user: any }) {
+    const [userState, SetState] = useState(user)
     const loadFile = function (event: any) {
         var image: HTMLImageElement = document.getElementById('output') as HTMLImageElement;
         if (image?.src)
             image.src = URL.createObjectURL(event.target.files[0]) || "";
         const formData = new FormData();
         formData.append('image', event.target.files[0]);
+        toast.success('Loading, Please wait.')
         axios
-            .post('/api/users/profilepic', formData)
+            .post('/api/users/update/profilepic', formData)
             .then((res) => {
                 console.log(res.data);
                 if (res.data?.success) {
-                    image.src = imageService + res?.data?.user?.photoUrl;
+                    SetState(res.data?.user)
+                    toast.success('Successfully!')
+                } else {
+                    toast.error('Process Error')
                 }
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+                toast.error('Process Error')
+            });
     };
 
     return (
@@ -47,9 +55,9 @@ export default function ProfilePictureForm({ imageService, user }: { imageServic
                     />
                     <Image
                         src={
-                            user?.photoUrl
-                                ? imageService + user?.photoUrl
-                                : `https://ui-avatars.com/api/?name=${user.username}`
+                            userState?.photoUrl
+                                ? imageService + userState?.photoUrl
+                                : `https://ui-avatars.com/api/?name=${userState.username}`
                         }
                         id="output"
                         className={`${styles.profileImage}`}
@@ -59,6 +67,8 @@ export default function ProfilePictureForm({ imageService, user }: { imageServic
                     />
                 </div>
             </div>
+            <Toaster position="top-right"
+                reverseOrder={false} />
         </div>
     );
 }
