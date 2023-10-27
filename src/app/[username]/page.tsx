@@ -9,14 +9,13 @@ import { fetchProfile } from "@/stores/profile"
 import { notFound } from 'next/navigation'
 
 const UserPage = async ({ params }: { params: { username: string } }) => {
-  await Promise.all([store.dispatch(fetchUser()), store.dispatch(fetchProfile(params.username))])
-  const { user } = store.getState().user
+  await store.dispatch(fetchProfile(params.username))
   const profile = store.getState().profile
   if (!profile?.user?.username) return notFound()
   const imageServiceUrl = process.env.AWS_BUCKET_URL;
   return (
     <div className='max-w-screen-lg mx-auto p-4 lg:p-0'>
-      <HomeNavbar user={user} imageServiceUrl={imageServiceUrl || ""} />
+      <HomeNavbar imageServiceUrl={imageServiceUrl || ""} />
       <div className='mt-16'>
         <UserInfo user={profile.user} imageServiceUrl={imageServiceUrl || ""} />
         <Masonry />

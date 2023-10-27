@@ -21,7 +21,7 @@ const UserInfo = ({ user, imageServiceUrl }: { user: any, imageServiceUrl: strin
   return (
     <div>
       <div className="my-8 flex flex-col items-center justify-center w-full gap-x-4">
-        <Image width={96} height={96} alt='' src={user?.photoUrl ? (imageServiceUrl + user.photoUrl) : `https://ui-avatars.com/api/?name=${user.username}`} className='object-cover rounded-full' />
+        <Image width={120} height={120} alt='' src={user?.photoUrl ? (imageServiceUrl + user.photoUrl) : `https://ui-avatars.com/api/?name=${user.username}`} className='object-cover w-32 h-32 rounded-full' />
         <div className='text-center my-4'>
           <h1 className='font-semibold text-lg uppercase mb-2'>{user.username}</h1>
           {/* <span className='text-gray-600 text-sm'>@theffaya</span> */}

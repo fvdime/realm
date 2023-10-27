@@ -36,7 +36,7 @@ const RegisterForm = () => {
       if (res.data?.success == true) {
         localStorage.setItem("user", JSON.stringify(res.data?.data))
         toast.success('Successfully!')
-        setTimeout(() => router.push("/login"), 250)
+        setTimeout(() => router.push("/account"), 250)
         // router.push("/");
       } else {
         actions.resetForm();

@@ -3,15 +3,12 @@ import UsernameEditForm from "@/components/forms/username-edit-form";
 import { store } from "@/stores";
 import { fetchUser } from "@/stores/user";
 import { getToken } from "@/lib/token";
-import HomeNavbar from "@/components/home-props/home-navbar";
 
 export default async function AccountPage() {
     await store.dispatch(fetchUser(getToken()))
     const { user } = store.getState().user
     const imageServiceUrl = process.env.AWS_BUCKET_URL || "";
     return <>
-        <HomeNavbar user={user} imageServiceUrl={imageServiceUrl} />
-
         <div className="max-w-screen-md mx-auto h-screen pt-20">
             <div>
                 <div className="overflow-x-auto">
