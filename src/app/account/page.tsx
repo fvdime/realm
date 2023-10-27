@@ -3,10 +3,12 @@ import UsernameEditForm from "@/components/forms/username-edit-form";
 import { store } from "@/stores";
 import { fetchUser } from "@/stores/user";
 import { getToken } from "@/lib/token";
+import { redirect } from "next/dist/client/components/redirect";
 
 export default async function AccountPage() {
     await store.dispatch(fetchUser(getToken()))
     const { user } = store.getState().user
+    if (!user) redirect("/login")
     const imageServiceUrl = process.env.AWS_BUCKET_URL || "";
     return <>
         <div className="max-w-screen-md mx-auto h-screen pt-20">

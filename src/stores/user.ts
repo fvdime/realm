@@ -3,7 +3,10 @@ import axios from 'axios';
 // import { getToken } from '@/lib/token';
 
 const initialState = {
-    user: {},
+    user: {
+        username: '',
+        photoUrl: '',
+    },
 };
 
 export const fetchUser = createAsyncThunk(
@@ -24,7 +27,14 @@ export const fetchUser = createAsyncThunk(
 export const { reducer, actions } = createSlice({
     name: 'user',
     initialState,
-    reducers: {},
+    reducers: {
+        SetUser: (state, action) => {
+            state.user = {
+                ...state.user,
+                ...action.payload,
+            };
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(fetchUser.fulfilled, (state, action) => {
             state.user = action.payload;
